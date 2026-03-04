@@ -6,7 +6,7 @@ import uuid
 
 app = FastAPI(title="Microservicio de Citas Médicas")
 
-# ----- Modelo de datos -----
+
 class Cita(BaseModel):
     id: str | None = None
     paciente: str
@@ -15,17 +15,15 @@ class Cita(BaseModel):
     motivo: str
     estado: str | None = "Activa"
 
-# ----- Base de datos simulada -----
+
 citas_db: List[Cita] = []
 
 
-# -----------------------------------
-# Crear cita (con delay de 2 segundos)
-# -----------------------------------
+
 @app.post("/citas", response_model=Cita)
 async def crear_cita(cita: Cita):
 
-    # Simular procesamiento
+    
     await asyncio.sleep(2)
 
     cita.id = str(uuid.uuid4())
@@ -34,9 +32,7 @@ async def crear_cita(cita: Cita):
     return cita
 
 
-# -----------------------------------
-# Listar todas las citas
-# -----------------------------------
+
 @app.get("/citas", response_model=List[Cita])
 async def listar_citas():
 
@@ -49,9 +45,7 @@ async def listar_citas():
     return citas_db
 
 
-# -----------------------------------
-# Buscar citas por paciente
-# -----------------------------------
+
 @app.get("/citas/paciente/{nombre}", response_model=List[Cita])
 async def buscar_por_paciente(nombre: str):
 
@@ -66,9 +60,6 @@ async def buscar_por_paciente(nombre: str):
     return resultados
 
 
-# -----------------------------------
-# Cancelar cita
-# -----------------------------------
 @app.delete("/citas/{cita_id}")
 async def cancelar_cita(cita_id: str):
 
